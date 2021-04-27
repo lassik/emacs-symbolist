@@ -52,7 +52,9 @@
      (mapcar (lambda (symbol)
                (list symbol
                      (vector ""
-                             (if (fboundp symbol) "F" "")
+                             (if (fboundp symbol)
+                                 (if (commandp symbol) "I" "F")
+                               "")
                              (if (boundp symbol) "V" "")
                              (if (symbol-plist symbol) "P" "")
                              (symbol-name symbol))))
