@@ -124,6 +124,7 @@ are deleted."
                    regexp)))
     (concat "*Symbolist: " query "*")))
 
+;;;###autoload
 (defun symbolist-regexp (regexp)
   "Show a buffer listing all Emacs Lisp symbols that match REGEXP.
 
@@ -135,6 +136,7 @@ Symbol matching respects the value of `case-fold-search'."
     (setq-local symbolist-regexp regexp)
     (revert-buffer)))
 
+;;;###autoload
 (defun symbolist-prefix (prefix)
   "Show a buffer listing all Emacs Lisp symbols that start with PREFIX.
 
