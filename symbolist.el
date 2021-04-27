@@ -70,14 +70,18 @@
   (add-hook 'tabulated-list-revert-hook
             'symbolist--refresh nil t))
 
-(defun symbolist-unmark ()
-  "Unmark the symbol on this line."
-  (interactive)
+(defun symbolist--set-mark (string)
+  "Internal function to set the mark on the current line to STRING."
   (when (and (eq major-mode 'symbolist-mode)
              (tabulated-list-get-id)
              (tabulated-list-get-entry))
-    (tabulated-list-set-col 0 "" t)
+    (tabulated-list-set-col 0 string t)
     (forward-line 1)))
+
+(defun symbolist-unmark ()
+  "Unmark the symbol on this line."
+  (interactive)
+  (symbolist--set-mark ""))
 
 (defun symbolist-mark-for-delete ()
   "Mark the symbol on this line for deletion.
@@ -85,11 +89,7 @@
 A subsequent \\<symbolist-mode-map>`\\[symbolist-execute]' command
 will delete it."
   (interactive)
-  (when (and (eq major-mode 'symbolist-mode)
-             (tabulated-list-get-id)
-             (tabulated-list-get-entry))
-    (tabulated-list-set-col 0 "D" t)
-    (forward-line 1)))
+  (symbolist--set-mark "D"))
 
 (defun symbolist-execute ()
   "Delete all symbols marked for deletion in this buffer.
@@ -103,7 +103,7 @@ are deleted."
       (while (not (eobp))
         (let* ((symbol (tabulated-list-get-id))
                (entry  (tabulated-list-get-entry))
-             (delete (and entry (eq (char-after) ?D))))
+               (delete (and entry (equal "D" (elt entry 0)))))
           (cond (delete
                  (symbolist--delete symbol)
                  (tabulated-list-delete-entry)
