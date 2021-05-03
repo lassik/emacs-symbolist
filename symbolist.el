@@ -62,7 +62,14 @@
   (tabulated-list-init-header))
 
 (define-derived-mode symbolist-mode tabulated-list-mode "Symbolist"
-  "Major mode for Symbolist buffers."
+  "Major mode for Symbolist buffers.
+
+The table columns give the following information about each symbol:
+
+D -- marked for deletion
+F -- has a function binding (I means an interactive function)
+V -- has a variable binding
+P -- has a property list with one or more properties"
   (setq-local tabulated-list-format
               [("D" 1 t)
                ("F" 1 t)
