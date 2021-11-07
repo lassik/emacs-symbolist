@@ -130,7 +130,7 @@ are deleted."
   "Internal function to make a buffer name based on REGEXP."
   (let ((query (if (string-match "^\\^" regexp)
                    (substring regexp 1)
-                   regexp)))
+                 regexp)))
     (concat "*Symbolist: " query "*")))
 
 ;;;###autoload
