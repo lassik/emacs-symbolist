@@ -79,6 +79,13 @@ P -- has a property list with one or more properties"
   (add-hook 'tabulated-list-revert-hook
             'symbolist--refresh nil t))
 
+(defun symbolist--get-mark ()
+  "Internal function to get the mark on the current line."
+  (let ((entry (and (eq major-mode 'symbolist-mode)
+                    (tabulated-list-get-id)
+                    (tabulated-list-get-entry))))
+    (and entry (elt entry 0))))
+
 (defun symbolist--set-mark (string)
   "Internal function to set the mark on the current line to STRING."
   (when (and (eq major-mode 'symbolist-mode)
@@ -109,8 +116,7 @@ each list entry after calling FUN."
     (goto-char (point-min))
     (while (not (eobp))
       (let* ((symbol (tabulated-list-get-id))
-             (entry (tabulated-list-get-entry))
-             (marked-for-delete-p (and entry (equal "D" (elt entry 0)))))
+             (marked-for-delete-p (equal "D" (symbolist--get-mark))))
         (if (and marked-for-delete-p (progn (funcall fun symbol) delete-p))
             (tabulated-list-delete-entry)
           (forward-line))))))
